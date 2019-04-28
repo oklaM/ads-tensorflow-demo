@@ -3,6 +3,7 @@ import './Demo1.css';
 import anime from 'animejs';
 import * as SVG from 'svg.js';
 import { Button } from 'antd';
+import {withRouter} from 'react-router';
 
 const data = [
     {step: 0, weight: 0.422631, biase: 0.115551, loss: 39.021523},
@@ -113,7 +114,7 @@ class Demo1 extends Component{
     }
     
     componentDidMount() {
-        let drawing = SVG('drawing').width(1000).height(800);
+        let drawing = SVG('drawing').width(1000).height(700);
         // let cx = drawing.cx();
 
         // /* 神经网络 */
@@ -203,7 +204,7 @@ class Demo1 extends Component{
          /* ps */
         let ps = drawing.group();
         let psRect = ps.rect(200, 100).x(500).y(0).radius(5).fill('rgb(200, 255, 255)');
-        let psText = ps.text('ps  w  b');
+        let psText = ps.text('ps/ w:0  b:0');
         psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
         ps.addClass('ps');
 
@@ -243,8 +244,9 @@ class Demo1 extends Component{
 
 
     sync = () => {
+        let that = this;
 
-        const {drawing, ps, psRect, worker1Rect, worker2Rect, wo, isSync} = this.state;
+        const {drawing, psRect, worker1Rect, worker2Rect, wo, isSync} = this.state;
         
         let worker2Tops = drawing.path(`
             M ${worker2Rect.x()} ${worker2Rect.cy()}
@@ -291,7 +293,22 @@ class Demo1 extends Component{
             duration: 2000,
             loopComplete: function() {
                 if (a2.completed == true) {
-                    let circle1 = drawing.circle(10).fill('#f02')
+                    window.setTimeout(() => {
+
+                    that.state.psText.remove();
+                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
+                    that.setState({psText: psText});
+                    loopCount++;
+                    if (loopCount >= data.length) {
+                        console.log(loopCount);
+                        a2.pause();
+                        a1.pause();
+                        alert('task finished');
+                        return;
+                    }
+
+                    let circle1 = drawing.circle(10).fill('#fa2')
                     circle1.addClass('circle1');
                     let circle2 = drawing.circle(10).fill('#f02')
                     circle2.addClass('circle2');
@@ -351,6 +368,7 @@ class Demo1 extends Component{
                             
                         }
                     });
+                }, 200)
                 } //if
             }
           });
@@ -367,7 +385,21 @@ class Demo1 extends Component{
             loopComplete: function() {
                 // psText = psText
                 if (a1.completed == true) {
-                    let circle1 = drawing.circle(10).fill('#f02')
+                    window.setTimeout(() => {
+                    that.state.psText.remove();
+                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
+                    that.setState({psText: psText});
+                    loopCount++;
+                    if (loopCount >= data.length) {
+						console.log("TCL: Demo1 -> sync -> loopCount", loopCount)
+                        a2.pause();
+                        a1.pause();
+                        alert('task finished');
+                        return;
+                    }
+
+                    let circle1 = drawing.circle(10).fill('#fa2')
                     circle1.addClass('circle1');
                     let circle2 = drawing.circle(10).fill('#f02')
                     circle2.addClass('circle2');
@@ -427,7 +459,8 @@ class Demo1 extends Component{
                             
                         }
                     });
-                }
+                }, 200)
+                } //if
 
                 
             }
@@ -440,7 +473,7 @@ class Demo1 extends Component{
     }
 
     async = () => {
-
+        let that = this;
         const {drawing, ps, psRect, worker1Rect, worker2Rect} = this.state;
         
         let worker2Tops = drawing.path(`
@@ -476,7 +509,7 @@ class Demo1 extends Component{
         let rect2 = drawing.rect(5,5)
         rect2.addClass('rect2');
 
-        
+        let loopCount = 0;
         let path = anime.path('.worker2Tops')
         let a1 = anime({
             targets: '.rect1',
@@ -486,32 +519,47 @@ class Demo1 extends Component{
             easing: 'linear',
             duration: 2000,
             loopComplete: function() {
-                let circle1 = drawing.circle(10).fill('#f02')
-                circle1.addClass('circle1');
-                path = anime.path('.psToworker2')
-                anime({
-                    
-                    targets: '.circle1',
-                    translateX: path('x'),
-                    translateY: path('y'),
-                    rotate: path('angle'),
-                    easing: 'linear',
-                    duration: 2000,
-                    loopComplete: function() {
-                        anime.set('.worker2Rect', {
-                            width: 0
-                            });
-                        let a4 = anime({
-                            targets: '.worker2Rect',
-                            width: 100, // -> from '28px' to '100%',
-                            easing: 'easeInOutQuad',
-                            duration: 2000 + anime.random(-1000, 1000),
-                            loopComplete: function() {
-                                a1.restart();
-                            }
-                            });
+                window.setTimeout(() => {
+                    that.state.psText.remove();
+                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
+                    that.setState({psText: psText});
+                    loopCount++;
+                    if (loopCount >= data.length) {
+						console.log("TCL: Demo1 -> sync -> loopCount", loopCount)
+                        a2.pause();
+                        a1.pause();
+                        alert('task finished');
+                        return;
                     }
-                });
+
+                    let circle1 = drawing.circle(10).fill('#fa2')
+                    circle1.addClass('circle1');
+                    path = anime.path('.psToworker2')
+                    anime({
+                        
+                        targets: '.circle1',
+                        translateX: path('x'),
+                        translateY: path('y'),
+                        rotate: path('angle'),
+                        easing: 'linear',
+                        duration: 2000,
+                        loopComplete: function() {
+                            anime.set('.worker2Rect', {
+                                width: 0
+                                });
+                            let a4 = anime({
+                                targets: '.worker2Rect',
+                                width: 100, // -> from '28px' to '100%',
+                                easing: 'easeInOutQuad',
+                                duration: 2000 + anime.random(-1000, 1000),
+                                loopComplete: function() {
+                                    a1.restart();
+                                }
+                                });
+                        }
+                    });
+                }, 400)
             }
           });
         path = anime.path('.worker1Tops')
@@ -525,32 +573,47 @@ class Demo1 extends Component{
             // delay: (i) => {i * 2000},
             // loop: true,
             loopComplete: function() {
-                let circle2 = drawing.circle(10).fill('#f02')
-                circle2.addClass('circle2');
-                path = anime.path('.psToworker1')
-                anime({
-                    targets: '.circle2',
-                    translateX: path('x'),
-                    translateY: path('y'),
-                    rotate: path('angle'),
-                    easing: 'linear',
-                    duration: 2000,
-                    // loop: true,
-                    loopComplete: function() {
-                        anime.set('.worker1Rect', {
-                            width: 0
-                            });
-                        let a3 = anime({
-                            targets: '.worker1Rect',
-                            width: 100, // -> from '28px' to '100%',
-                            easing: 'easeInOutQuad',
-                            duration: 2000 + anime.random(-1000, 1000),
-                            loopComplete: function() {
-                                a2.restart();
-                            }
-                            });
+                window.setTimeout(() => {
+                    that.state.psText.remove();
+                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
+                    that.setState({psText: psText});
+                    loopCount++;
+                    if (loopCount >= data.length) {
+						console.log("TCL: Demo1 -> sync -> loopCount", loopCount)
+                        a2.pause();
+                        a1.pause();
+                        alert('task finished');
+                        return;
                     }
-                });
+
+                    let circle2 = drawing.circle(10).fill('#f02')
+                    circle2.addClass('circle2');
+                    path = anime.path('.psToworker1')
+                    anime({
+                        targets: '.circle2',
+                        translateX: path('x'),
+                        translateY: path('y'),
+                        rotate: path('angle'),
+                        easing: 'linear',
+                        duration: 2000,
+                        // loop: true,
+                        loopComplete: function() {
+                            anime.set('.worker1Rect', {
+                                width: 0
+                                });
+                            let a3 = anime({
+                                targets: '.worker1Rect',
+                                width: 100, // -> from '28px' to '100%',
+                                easing: 'easeInOutQuad',
+                                duration: 2000 + anime.random(-1000, 1000),
+                                loopComplete: function() {
+                                    a2.restart();
+                                }
+                                });
+                        }
+                    });
+                }, 400)
             }
           });
         this.setState({a1: a1, a2: a2})
@@ -558,4 +621,4 @@ class Demo1 extends Component{
     
     
 }
-export default Demo1;
+export default withRouter(Demo1);

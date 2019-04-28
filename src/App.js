@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import './App.css';
 import Demo1 from './component/Demo1';
+import { HashRouter as Router, Route, Link, Switch } from 'react-router-dom';
 
 import {
     Layout, Menu, Breadcrumb, Icon,
   } from 'antd';
   
   const { SubMenu } = Menu;
-  const { Header, Content, Sider } = Layout;
+  const { Header, Content, Sider, Footer} = Layout;
   
  class App extends Component {
     constructor(props) {
@@ -30,6 +31,8 @@ import {
         </Menu>
       </Header>
       <Layout>
+        <Router>
+
         <Sider width={200} style={{ background: '#fff' }}>
           <Menu
             mode="inline"
@@ -38,8 +41,17 @@ import {
             style={{ height: '100%', borderRight: 0 }}
           >
             <SubMenu key="sub1" title={<span><Icon type="laptop" />simulation</span>}>
-              <Menu.Item key="1">option1</Menu.Item>
-              <Menu.Item key="2">option2</Menu.Item>
+
+
+              <Menu.Item key="1">
+                <Link to="/">demo1</Link>
+                deom1
+              </Menu.Item>
+              <Menu.Item key="2">
+              {/* <Link to="/demo2">demo2</Link> */}
+              {/* demo2 */}
+              </Menu.Item>
+
             </SubMenu>
           </Menu>
         </Sider>
@@ -52,10 +64,19 @@ import {
             background: '#fff', padding: 24, margin: 0, minHeight: 280,
           }}
           >
-           <Demo1/>
+           {/* <Demo1/> */}
+          <Switch>
+
+           <Route exact path="/" component={Demo1}></Route>
+           {/* <Route exact path="/demo2" component={Demo2}></Route> */}
+
+          </Switch>
+
           </Content>
         </Layout>
+        </Router>
       </Layout>
+      <Footer/>
     </Layout>
       );
     }
