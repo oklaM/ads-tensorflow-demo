@@ -4,6 +4,7 @@ import anime from 'animejs';
 import * as SVG from 'svg.js';
 import { Button, Table } from 'antd';
 import {withRouter} from 'react-router';
+import { Row, Col } from 'antd';
 
 const data = [
     {step: 0, weight: 0.422631, biase: 0.115551, loss: 39.021523},
@@ -133,16 +134,26 @@ class Demo1 extends Component{
     render(){
         return (
             <div id="container">
-                <div id="drawing"></div>
-                <Button onClick={this.sync}>sync</Button>
-                <Button onClick={this.async}>async</Button>
-                <Table dataSource={dataSource} columns={columns} />
+                <Row type="flex" justify="center" align="top">
+                    <Col span={10}>
+                        <div id="drawing" className="drawing"></div>
+                        <Button onClick={this.sync}>sync</Button>
+                        <Button onClick={this.async}>async</Button>
+                    </Col>
+                    <Col span={14}>
+                        <Table className="table" dataSource={dataSource} columns={columns} />
+                    </Col>
+                </Row>
+                
+                
             </div>
         )    
     }
     
     componentDidMount() {
-        let drawing = SVG('drawing').width(800).height(500);
+        let draw = SVG('drawing').width(500).height(700);
+        let drawing = draw.group();
+        drawing.move(-300,0);
         // let cx = drawing.cx();
 
         // /* 神经网络 */
@@ -322,7 +333,7 @@ class Demo1 extends Component{
             loopComplete: function() {
                 if (a2.completed == true) {
                     window.setTimeout(() => {
-
+                        data[loopCount].key = `${loopCount}`;
                         dataSource.push(data[loopCount]);
                     that.state.psText.remove();
                     let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
@@ -415,6 +426,7 @@ class Demo1 extends Component{
                 // psText = psText
                 if (a1.completed == true) {
                     window.setTimeout(() => {
+                        data[loopCount].key = `${loopCount}`;
                         dataSource.push(data[loopCount]);
                     that.state.psText.remove();
                     let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
@@ -550,6 +562,7 @@ class Demo1 extends Component{
             duration: 2000,
             loopComplete: function() {
                 window.setTimeout(() => {
+                    data[loopCount].key = `${loopCount}`;
                     dataSource.push(data[loopCount]);
 
                     that.state.psText.remove();
@@ -606,6 +619,7 @@ class Demo1 extends Component{
             // loop: true,
             loopComplete: function() {
                 window.setTimeout(() => {
+                    data[loopCount].key = `${loopCount}`;
                     dataSource.push(data[loopCount]);
 
                     that.state.psText.remove();

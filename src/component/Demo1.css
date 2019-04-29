@@ -1,6 +1,5 @@
 .container {
-    position: relative;
-    left: 100px;
+    height: 1000px;
 
 }
 
@@ -17,3 +16,18 @@
     background: #8AC007;
     padding: 10px; 
 }
+
+/* .drawing {
+    position: relative;
+    width: 500px;
+    display: block;
+} */
+
+/* .table {
+    position: relative;
+    top: 0px;
+    float: right;
+    right: 0px;
+    width: 500px;
+    display: block;
+} */
