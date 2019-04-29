@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './Demo1.css';
 import anime from 'animejs';
 import * as SVG from 'svg.js';
-import { Button } from 'antd';
+import { Button, Table } from 'antd';
 import {withRouter} from 'react-router';
 
 const data = [
@@ -96,6 +96,33 @@ const data = [
     {step: 181000, weight: 2.004286, biase: 10.001149, loss: 0.000772},
 ]
 
+const dataSource = []
+    
+// const dataSource = [ 
+//     {key: '1', step: 0, weight: 0.422631, biase: 0.115551, loss: 39.021523},
+//     {key: '2', step: 1000, weight: 0.502552, biase: 0.689394, loss: 46.659107},   
+// ];
+  
+  const columns = [{
+    title: 'Step',
+    dataIndex: 'step',
+    key: 'step',
+  }, {
+    title: 'Weight',
+    dataIndex: 'weight',
+    key: 'weight',
+  }, {
+    title: 'Biase',
+    dataIndex: 'biase',
+    key: 'biase',
+  }, {
+    title: 'Loss',
+    dataIndex: 'loss',
+    key: 'loss'
+  }];
+  
+  
+
 class Demo1 extends Component{ 
     myRef = React.createRef();
     constructor(props) {
@@ -109,12 +136,13 @@ class Demo1 extends Component{
                 <div id="drawing"></div>
                 <Button onClick={this.sync}>sync</Button>
                 <Button onClick={this.async}>async</Button>
+                <Table dataSource={dataSource} columns={columns} />
             </div>
         )    
     }
     
     componentDidMount() {
-        let drawing = SVG('drawing').width(1000).height(700);
+        let drawing = SVG('drawing').width(800).height(500);
         // let cx = drawing.cx();
 
         // /* 神经网络 */
@@ -277,9 +305,9 @@ class Demo1 extends Component{
         psToworker1.addClass('psToworker1')
 
         let rect1 = drawing.rect(5,5)
-        rect1.addClass('rect1');
+        rect1.addClass('rect1').fill('#48b');
         let rect2 = drawing.rect(5,5)
-        rect2.addClass('rect2');
+        rect2.addClass('rect2').fill('#ff0');
 
         
         let loopCount = 0;
@@ -295,6 +323,7 @@ class Demo1 extends Component{
                 if (a2.completed == true) {
                     window.setTimeout(() => {
 
+                        dataSource.push(data[loopCount]);
                     that.state.psText.remove();
                     let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
@@ -308,7 +337,7 @@ class Demo1 extends Component{
                         return;
                     }
 
-                    let circle1 = drawing.circle(10).fill('#fa2')
+                    let circle1 = drawing.circle(10).fill('#f02')
                     circle1.addClass('circle1');
                     let circle2 = drawing.circle(10).fill('#f02')
                     circle2.addClass('circle2');
@@ -386,6 +415,7 @@ class Demo1 extends Component{
                 // psText = psText
                 if (a1.completed == true) {
                     window.setTimeout(() => {
+                        dataSource.push(data[loopCount]);
                     that.state.psText.remove();
                     let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
@@ -399,7 +429,7 @@ class Demo1 extends Component{
                         return;
                     }
 
-                    let circle1 = drawing.circle(10).fill('#fa2')
+                    let circle1 = drawing.circle(10).fill('#f02')
                     circle1.addClass('circle1');
                     let circle2 = drawing.circle(10).fill('#f02')
                     circle2.addClass('circle2');
@@ -505,9 +535,9 @@ class Demo1 extends Component{
         psToworker1.addClass('psToworker1')
 
         let rect1 = drawing.rect(5,5)
-        rect1.addClass('rect1');
+        rect1.addClass('rect1').fill('#48b');
         let rect2 = drawing.rect(5,5)
-        rect2.addClass('rect2');
+        rect2.addClass('rect2').fill('#ff0');
 
         let loopCount = 0;
         let path = anime.path('.worker2Tops')
@@ -520,6 +550,8 @@ class Demo1 extends Component{
             duration: 2000,
             loopComplete: function() {
                 window.setTimeout(() => {
+                    dataSource.push(data[loopCount]);
+
                     that.state.psText.remove();
                     let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
@@ -574,6 +606,8 @@ class Demo1 extends Component{
             // loop: true,
             loopComplete: function() {
                 window.setTimeout(() => {
+                    dataSource.push(data[loopCount]);
+
                     that.state.psText.remove();
                     let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
