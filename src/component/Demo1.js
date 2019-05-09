@@ -151,7 +151,7 @@ class Demo1 extends Component{
     }
     
     componentDidMount() {
-        let draw = SVG('drawing').width(500).height(700);
+        let draw = SVG('drawing').width(500).height(500);
         let drawing = draw.group();
         drawing.move(-300,0);
         // let cx = drawing.cx();
@@ -242,23 +242,23 @@ class Demo1 extends Component{
 
          /* ps */
         let ps = drawing.group();
-        let psRect = ps.rect(200, 100).x(500).y(0).radius(5).fill('rgb(200, 255, 255)');
-        let psText = ps.text('ps/ w:0  b:0');
+        let psRect = ps.rect(200, 100).x(500).y(0).radius(5).fill('#A199E9');
+        let psText = ps.text('/job:ps/task:0\nw:0\nb:0').size(20).fill('white');
         psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
         ps.addClass('ps');
 
         /* worker1 */
         let worker1 = drawing.group();
-        let worker1Rect = worker1.rect(100, 50).x(500).y(150).radius(5).fill('rgb(200, 255, 255)');
-        let worker1Text = worker1.text('worker1')
+        let worker1Rect = worker1.rect(150, 50).x(500).y(150).radius(5).fill('#6c7874');
+        let worker1Text = worker1.text('/job:worker/task:0').size(18).fill('white');
         worker1Text.x(worker1Rect.cx() - worker1Text.bbox().width / 2).y(worker1Rect.cy() - worker1Text.bbox().height / 2);
         worker1.addClass('worker1');
         worker1Rect.addClass('worker1Rect');
 
         /* worker2 */
         let worker2 = drawing.group();
-        let worker2Rect = worker2.rect(100, 50).x(500).y(230).radius(5).fill('rgb(200, 255, 255)');
-        let worker2Text = worker2.text('worker2')
+        let worker2Rect = worker2.rect(150, 50).x(500).y(230).radius(5).fill('#6c7874');
+        let worker2Text = worker2.text('/job:worker/task:1').size(18).fill('white');
         worker2Text.x(worker2Rect.cx() - worker2Text.bbox().width / 2).y(worker2Rect.cy() - worker2Text.bbox().height / 2);
         worker2.addClass('worker2');
         worker2Rect.addClass('worker2Rect');
@@ -315,10 +315,10 @@ class Demo1 extends Component{
         psToworker1.marker('end', 5, 5 )
         psToworker1.addClass('psToworker1')
 
-        let rect1 = drawing.rect(5,5)
-        rect1.addClass('rect1').fill('#48b');
-        let rect2 = drawing.rect(5,5)
-        rect2.addClass('rect2').fill('#ff0');
+        let rect1 = drawing.rect(10,10)
+        rect1.addClass('rect1').fill('#660066');
+        let rect2 = drawing.rect(10,10)
+        rect2.addClass('rect2').fill('#385098');
 
         
         let loopCount = 0;
@@ -334,9 +334,9 @@ class Demo1 extends Component{
                 if (a2.completed == true) {
                     window.setTimeout(() => {
                         data[loopCount].key = `${loopCount}`;
-                        dataSource.push(data[loopCount]);
+                        dataSource.unshift(data[loopCount]);
                     that.state.psText.remove();
-                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    let psText = drawing.text(`/job:ps/task:0\nw: ${data[loopCount].weight}\nb: ${data[loopCount].biase}`).size(20).fill('white');
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
                     that.setState({psText: psText});
                     loopCount++;
@@ -377,7 +377,7 @@ class Demo1 extends Component{
                                 });
                             let a3 = anime({
                                 targets: '.worker2Rect',
-                                width: 100, // -> from '28px' to '100%',
+                                width: 150, // -> from '28px' to '100%',
                                 easing: 'easeInOutQuad',
                                 duration: 2000 + anime.random(-1000, 1000),
                                 loopComplete: function() {
@@ -394,7 +394,7 @@ class Demo1 extends Component{
                                 });
                             let a4 = anime({
                                 targets: '.worker1Rect',
-                                width: 100, // -> from '28px' to '100%',
+                                width: 150, // -> from '28px' to '100%',
                                 easing: 'easeInOutQuad',
                                 duration: 2000 + anime.random(-1000, 1000),
                                 loopComplete: function() {
@@ -427,9 +427,9 @@ class Demo1 extends Component{
                 if (a1.completed == true) {
                     window.setTimeout(() => {
                         data[loopCount].key = `${loopCount}`;
-                        dataSource.push(data[loopCount]);
+                        dataSource.unshift(data[loopCount]);
                     that.state.psText.remove();
-                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    let psText = drawing.text(`/job:ps/task:0\nw: ${data[loopCount].weight}\nb: ${data[loopCount].biase}`).size(20).fill('white');
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
                     that.setState({psText: psText});
                     loopCount++;
@@ -470,7 +470,7 @@ class Demo1 extends Component{
                                 });
                             let a3 = anime({
                                 targets: '.worker2Rect',
-                                width: 100, // -> from '28px' to '100%',
+                                width: 150, // -> from '28px' to '100%',
                                 easing: 'easeInOutQuad',
                                 duration: 2000 + anime.random(-1000, 1000),
                                 loopComplete: function() {
@@ -487,7 +487,7 @@ class Demo1 extends Component{
                                 });
                             let a4 = anime({
                                 targets: '.worker1Rect',
-                                width: 100, // -> from '28px' to '100%',
+                                width: 150, // -> from '28px' to '100%',
                                 easing: 'easeInOutQuad',
                                 duration: 2000 + anime.random(-1000, 1000),
                                 loopComplete: function() {
@@ -546,10 +546,10 @@ class Demo1 extends Component{
         psToworker1.marker('end', 5, 5 )
         psToworker1.addClass('psToworker1')
 
-        let rect1 = drawing.rect(5,5)
-        rect1.addClass('rect1').fill('#48b');
-        let rect2 = drawing.rect(5,5)
-        rect2.addClass('rect2').fill('#ff0');
+        let rect1 = drawing.rect(10,10)
+        rect1.addClass('rect1').fill('#660066');
+        let rect2 = drawing.rect(10,10)
+        rect2.addClass('rect2').fill('#385098');
 
         let loopCount = 0;
         let path = anime.path('.worker2Tops')
@@ -563,10 +563,10 @@ class Demo1 extends Component{
             loopComplete: function() {
                 window.setTimeout(() => {
                     data[loopCount].key = `${loopCount}`;
-                    dataSource.push(data[loopCount]);
+                    dataSource.unshift(data[loopCount]);
 
                     that.state.psText.remove();
-                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    let psText = drawing.text(`/job:ps/task:0\nw: ${data[loopCount].weight}\nb: ${data[loopCount].biase}`).size(20).fill('white');
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
                     that.setState({psText: psText});
                     loopCount++;
@@ -595,7 +595,7 @@ class Demo1 extends Component{
                                 });
                             let a4 = anime({
                                 targets: '.worker2Rect',
-                                width: 100, // -> from '28px' to '100%',
+                                width: 150, // -> from '28px' to '100%',
                                 easing: 'easeInOutQuad',
                                 duration: 2000 + anime.random(-1000, 1000),
                                 loopComplete: function() {
@@ -620,10 +620,10 @@ class Demo1 extends Component{
             loopComplete: function() {
                 window.setTimeout(() => {
                     data[loopCount].key = `${loopCount}`;
-                    dataSource.push(data[loopCount]);
+                    dataSource.unshift(data[loopCount]);
 
                     that.state.psText.remove();
-                    let psText = drawing.text(`ps/ w: ${data[loopCount].weight} b: ${data[loopCount].biase}`);
+                    let psText = drawing.text(`/job:ps/task:0\nw: ${data[loopCount].weight}\nb: ${data[loopCount].biase}`).size(20).fill('white');
                     psText.x(psRect.cx() - psText.bbox().width / 2).y(psRect.cy() - psText.bbox().height / 2);
                     that.setState({psText: psText});
                     loopCount++;
@@ -652,7 +652,7 @@ class Demo1 extends Component{
                                 });
                             let a3 = anime({
                                 targets: '.worker1Rect',
-                                width: 100, // -> from '28px' to '100%',
+                                width: 150, // -> from '28px' to '100%',
                                 easing: 'easeInOutQuad',
                                 duration: 2000 + anime.random(-1000, 1000),
                                 loopComplete: function() {
